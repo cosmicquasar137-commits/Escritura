@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Episodios - Narrativa Espacial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Variables de color y tipografía */
+        :root {
+            --deep-space: #0a0818;
+            --nebula-purple: #4e1a7d;
+            --pulsar-blue: #00c2ff;
+            --supernova: #ff3860;
+            --star-light: #f8f9fa;
+            --galaxy-edge: #1a1a2e;
+            --space-dust: #16213e;
+            --quantum-violet: #8a2be2;
+            --stardust-yellow: #ffde59;
+        }
+        
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: radial-gradient(ellipse at center, var(--nebula-purple) 0%, var(--deep-space) 70%);
+            color: var(--star-light);
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Efecto de estrellas */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 5px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 3px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 4px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            z-index: -1;
+            animation: stars 120s linear infinite;
+        }
+        
+        @keyframes stars {
+            from { transform: translateY(0); }
+            to { transform: translateY(-1000px); }
+        }
+        
+        /* Cabecera y navegación */
+        header {
+            background: rgba(10, 8, 24, 0.8);
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid var(--pulsar-blue);
+            box-shadow: 0 0 15px rgba(0, 194, 255, 0.3);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 1rem;
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            background: linear-gradient(90deg, var(--pulsar-blue), var(--supernova));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(0, 194, 255, 0.5);
+        }
+        
+        .logo-subtitle {
+            font-size: 1rem;
+            color: var(--pulsar-blue);
+            letter-spacing: 2px;
+            margin-top: -5px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: var(--star-light);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 500;
+            letter-spacing: 1px;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        nav a:hover {
+            color: var(--pulsar-blue);
+        }
+        
+        nav a.active {
+            color: var(--pulsar-blue);
+            background: rgba(0, 194, 255, 0.1);
+            box-shadow: 0 0 10px rgba(0, 194, 255, 0.3);
+        }
+        
+        nav a.active::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: var(--pulsar-blue);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--pulsar-blue);
+        }
+        
+        /* Contenido principal */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .page-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            background: linear-gradient(90deg, var(--pulsar-blue), var(--supernova));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(0, 194, 255, 0.4);
+        }
+        
+        .page-subtitle {
+            text-align: center;
+            color: var(--pulsar-blue);
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .btn {
+            background: linear-gradient(90deg, var(--pulsar-blue), var(--nebula-purple));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 194, 255, 0.3);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 194, 255, 0.5);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(90deg, var(--supernova), #b71540);
+        }
+        
+        .btn-success {
+            background: linear-gradient(90deg, var(--stardust-yellow), #ff9d00);
+        }
+        
+        .btn i {
+            font-size: 1.2rem;
+        }
+        
+        /* Contenedor de episodios */
+        .episodes-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+        
+        .episode-card {
+            background: rgba(26, 26, 46, 0.7);
+            border: 1px solid var(--pulsar-blue);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 0 20px rgba(0, 194, 255, 0.2);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        
+        .episode-card:hover {
+            box-shadow: 0 0 30px rgba(0, 194, 255, 0.4);
+            transform: translateY(-5px);
+        }
+        
+        .episode-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 194, 255, 0.3);
+        }
+        
+        .episode-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--pulsar-blue);
+            width: 80%;
+            background: transparent;
+            border: none;
+            color: var(--pulsar-blue);
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+        
+        .episode-title:focus {
+            outline: 1px solid var(--pulsar-blue);
+            background: rgba(0, 194, 255, 0.1);
+        }
+        
+        .delete-episode {
+            background: rgba(255, 56, 96, 0.2);
+            color: var(--supernova);
+            border: 1px solid var(--supernova);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .delete-episode:hover {
+            background: rgba(255, 56, 96, 0.4);
+            transform: rotate(90deg);
+        }
+        
+        /* Story Circle */
+        .story-circle {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .story-step {
+            background: rgba(0, 194, 255, 0.08);
+            border: 1px solid rgba(0, 194, 255, 0.3);
+            border-radius: 8px;
+            padding: 1.2rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .story-step:hover {
+            background: rgba(0, 194, 255, 0.15);
+            border-color: var(--pulsar-blue);
+            transform: translateY(-3px);
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -12px;
+            left: 15px;
+            background: var(--quantum-violet);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+        }
+        
+        .step-label {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--stardust-yellow);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .step-text {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 194, 255, 0.3);
+            border-radius: 6px;
+            padding: 0.8rem;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .step-text:focus {
+            outline: 1px solid var(--pulsar-blue);
+            background: rgba(0, 194, 255, 0.1);
+        }
+        
+        /* Chekhov's Guns */
+        .guns-container {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(0, 194, 255, 0.3);
+        }
+        
+        .guns-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--pulsar-blue);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .guns-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .gun-item {
+            background: rgba(255, 222, 89, 0.08);
+            border: 1px solid rgba(255, 222, 89, 0.3);
+            border-radius: 8px;
+            padding: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .gun-item:hover {
+            background: rgba(255, 222, 89, 0.15);
+            border-color: var(--stardust-yellow);
+            transform: translateY(-3px);
+        }
+        
+        .gun-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 222, 89, 0.3);
+            border-radius: 6px;
+            padding: 0.8rem;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+            margin-bottom: 1rem;
+        }
+        
+        .gun-input:focus {
+            outline: 1px solid var(--stardust-yellow);
+            background: rgba(255, 222, 89, 0.1);
+        }
+        
+        .gun-select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 222, 89, 0.3);
+            border-radius: 6px;
+            padding: 0.8rem;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .delete-gun {
+            color: var(--supernova);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+            display: inline-block;
+        }
+        
+        .delete-gun:hover {
+            transform: scale(1.2);
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(0, 194, 255, 0.3);
+            color: var(--pulsar-blue);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+        
+        /* Animaciones */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 194, 255, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 194, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 194, 255, 0); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .story-circle {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .guns-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabecera con navegación -->
+    <header>
+        <div class="logo-container">
+            <div>
+                <div class="logo">COSMIC NARRATIVE</div>
+                <div class="logo-subtitle">Story Development Toolkit</div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="character.html">Personajes</a></li>
+                <li><a href="episodios.html" class="active">Episodios</a></li>
+                <li><a href="timeline.html">Líneas de Tiempo</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <!-- Contenido principal -->
+    <div class="container">
+        <h1 class="page-title">GENERADOR DE EPISODIOS</h1>
+        <p class="page-subtitle">Utiliza el Story Circle de Dan Harmon para estructurar tus episodios con precisión narrativa</p>
+        
+        <div class="controls">
+            <button id="add-episode" class="btn pulse">
+                <i>+</i> Nuevo Episodio
+            </button>
+            <button id="save-all" class="btn">
+                <i>💾</i> Guardar Todo
+            </button>
+            <button id="generate-pdf" class="btn btn-success">
+                <i>📄</i> Exportar a PDF
+            </button>
+        </div>
+        
+        <div class="episodes-container" id="episodesContainer">
+            <!-- Los episodios se generarán dinámicamente aquí -->
+        </div>
+    </div>
+    
+    <!-- Pie de página -->
+    <footer>
+        COSMIC NARRATIVE TOOLKIT &copy; 2025 | Herramienta profesional para escritores de series
+    </footer>
+    
+    <script>
+        // Datos de ejemplo para episodios
+        const sampleEpisodes = [
+            {
+                title: "El Origen del Artefacto",
+                steps: [
+                    "El equipo de exploración espacial realiza una rutinaria misión de reconocimiento en el planeta Xylos.",
+                    "Detectan una anomalía energética que podría ser la clave para resolver la crisis energética de la Tierra.",
+                    "La capitana Elena ordena un aterrizaje de emergencia cerca de la fuente de energía.",
+                    "El equipo enfrenta peligros desconocidos mientras buscan el origen de la señal.",
+                    "Descubren un artefacto alienígena de poder inimaginable.",
+                    "Al intentar recuperarlo, activan mecanismos de defensa que ponen en riesgo sus vidas.",
+                    "Logran escapar con el artefacto, pero descubren que han despertado a una antigua raza.",
+                    "El equipo debe aceptar que sus acciones tienen consecuencias galácticas."
+                ],
+                guns: [
+                    { element: "Dispositivo de traducción alienígena", type: "aparición" },
+                    { element: "Cristales de energía", type: "uso" }
+                ]
+            },
+            {
+                title: "La Traición de Marco",
+                steps: [
+                    "Marco celebra su cumpleaños con la tripulación en la nave estelar.",
+                    "Revela que su familia está en peligro en la Tierra y necesita regresar.",
+                    "Toma el control de la nave y cambia el rumbo hacia la Tierra.",
+                    "El equipo intenta convencerlo mientras buscan formas de recuperar el control.",
+                    "Descubren que Marco ha estado en contacto con una facción rebelde.",
+                    "En un enfrentamiento, Marco hiere a su mejor amigo Carlos.",
+                    "Logran detener a Marco y devolver el control de la nave.",
+                    "Marco es puesto en custodia y debe enfrentar las consecuencias de sus actos."
+                ],
+                guns: [
+                    { element: "Símbolo rebelde en la chaqueta de Marco", type: "aparición" },
+                    { element: "Pistola oculta en su cabina", type: "uso" }
+                ]
+            }
+        ];
+        
+        // Etapas del Story Circle de Dan Harmon
+        const storySteps = [
+            "Tú (El protagonista en su zona de confort)",
+            "Necesidad (Algo que desea o necesita)",
+            "Ir (Cruza el umbral hacia lo desconocido)",
+            "Buscar (Enfrenta pruebas, encuentra aliados y enemigos)",
+            "Encontrar (Consigue lo que quería)",
+            "Tomar (Paga un precio alto por ello)",
+            "Volver (Regresa a su mundo con lo obtenido)",
+            "Cambiar (Ahora es diferente)"
+        ];
+        
+        // Estado de la aplicación
+        let episodes = [];
+        
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', () => {
+            // Cargar datos guardados o usar datos de ejemplo
+            const savedEpisodes = localStorage.getItem('episodes');
+            episodes = savedEpisodes ? JSON.parse(savedEpisodes) : sampleEpisodes;
+            
+            // Renderizar los episodios
+            renderEpisodes();
+            
+            // Configurar event listeners
+            document.getElementById('add-episode').addEventListener('click', addNewEpisode);
+            document.getElementById('save-all').addEventListener('click', saveAllEpisodes);
+            document.getElementById('generate-pdf').addEventListener('click', generatePDF);
+        });
+        
+        // Función para renderizar todos los episodios
+        function renderEpisodes() {
+            const container = document.getElementById('episodesContainer');
+            container.innerHTML = '';
+            
+            episodes.forEach((episode, index) => {
+                container.appendChild(createEpisodeElement(episode, index));
+            });
+        }
+        
+        // Función para crear el elemento HTML de un episodio
+        function createEpisodeElement(episode, index) {
+            const episodeEl = document.createElement('div');
+            episodeEl.className = 'episode-card';
+            
+            // Construir el HTML para las etapas del Story Circle
+            let stepsHTML = '';
+            storySteps.forEach((step, i) => {
+                stepsHTML += `
+                    <div class="story-step">
+                        <div class="step-number">${i + 1}</div>
+                        <div class="step-label">${step}</div>
+                        <textarea class="step-text" 
+                                  data-index="${index}" 
+                                  data-step="${i}"
+                                  oninput="updateStepText(event)">${episode.steps[i] || ''}</textarea>
+                    </div>
+                `;
+            });
+            
+            // Construir el HTML para los Chekhov's Guns
+            let gunsHTML = '';
+            if (episode.guns && episode.guns.length > 0) {
+                episode.guns.forEach((gun, gunIndex) => {
+                    gunsHTML += `
+                        <div class="gun-item">
+                            <input type="text" class="gun-input" 
+                                   value="${gun.element}" 
+                                   placeholder="Elemento"
+                                   data-index="${index}" 
+                                   data-gun="${gunIndex}"
+                                   data-field="element"
+                                   oninput="updateGunField(event)">
+                            <select class="gun-select"
+                                    data-index="${index}" 
+                                    data-gun="${gunIndex}"
+                                    data-field="type"
+                                    onchange="updateGunField(event)">
+                                <option value="aparición" ${gun.type === 'aparición' ? 'selected' : ''}>Aparición</option>
+                                <option value="uso" ${gun.type === 'uso' ? 'selected' : ''}>Uso</option>
+                            </select>
+                            <div class="delete-gun" onclick="deleteGun(${index}, ${gunIndex})">
+                                ✕ Eliminar
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                gunsHTML = '<div class="gun-item">No hay Chekhov\'s Guns añadidos</div>';
+            }
+            
+            episodeEl.innerHTML = `
+                <div class="episode-header">
+                    <input type="text" class="episode-title" value="${episode.title}" 
+                        data-index="${index}" onchange="updateEpisodeTitle(event)">
+                    <div class="delete-episode" onclick="deleteEpisode(${index})">
+                        ✕
+                    </div>
+                </div>
+                
+                <div class="story-circle">
+                    ${stepsHTML}
+                </div>
+                
+                <div class="guns-container">
+                    <h3 class="guns-title">
+                        <i>🔫</i> Chekhov's Guns
+                        <button class="btn" onclick="addGun(${index})" style="margin-left: auto; padding: 0.4rem 0.8rem; font-size: 0.9rem;">
+                            + Añadir Gun
+                        </button>
+                    </h3>
+                    <div class="guns-list">
+                        ${gunsHTML}
+                    </div>
+                </div>
+            `;
+            
+            return episodeEl;
+        }
+        
+        // Función para añadir un nuevo episodio
+        function addNewEpisode() {
+            const newEpisode = {
+                title: "Nuevo Episodio",
+                steps: Array(8).fill(""),
+                guns: []
+            };
+            
+            episodes.push(newEpisode);
+            renderEpisodes();
+            
+            // Desplazar al nuevo episodio
+            setTimeout(() => {
+                const lastEpisode = document.querySelector('.episode-card:last-child');
+                if (lastEpisode) {
+                    lastEpisode.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }
+            }, 100);
+        }
+        
+        // Función para eliminar un episodio
+        function deleteEpisode(index) {
+            if (confirm('¿Estás seguro de eliminar este episodio? Todos sus datos se perderán.')) {
+                episodes.splice(index, 1);
+                renderEpisodes();
+            }
+        }
+        
+        // Función para actualizar el título del episodio
+        function updateEpisodeTitle(event) {
+            const index = event.target.dataset.index;
+            episodes[index].title = event.target.value;
+        }
+        
+        // Función para actualizar el texto de una etapa
+        function updateStepText(event) {
+            const index = event.target.dataset.index;
+            const step = event.target.dataset.step;
+            episodes[index].steps[step] = event.target.value;
+        }
+        
+        // Función para añadir un nuevo Chekhov's Gun
+        function addGun(episodeIndex) {
+            if (!episodes[episodeIndex].guns) {
+                episodes[episodeIndex].guns = [];
+            }
+            
+            episodes[episodeIndex].guns.push({
+                element: "Nuevo elemento",
+                type: "aparición"
+            });
+            
+            renderEpisodes();
+        }
+        
+        // Función para eliminar un Chekhov's Gun
+        function deleteGun(episodeIndex, gunIndex) {
+            episodes[episodeIndex].guns.splice(gunIndex, 1);
+            renderEpisodes();
+        }
+        
+        // Función para actualizar un campo de Chekhov's Gun
+        function updateGunField(event) {
+            const index = event.target.dataset.index;
+            const gun = event.target.dataset.gun;
+            const field = event.target.dataset.field;
+            
+            episodes[index].guns[gun][field] = event.target.value;
+        }
+        
+        // Función para guardar todos los episodios
+        function saveAllEpisodes() {
+            localStorage.setItem('episodes', JSON.stringify(episodes));
+            
+            // Efecto visual de guardado
+            const saveButton = document.getElementById('save-all');
+            saveButton.textContent = '✓ Guardado!';
+            saveButton.style.background = 'linear-gradient(90deg, #00c853, #009624)';
+            
+            setTimeout(() => {
+                saveButton.innerHTML = '<i>💾</i> Guardar Todo';
+                saveButton.style.background = 'linear-gradient(90deg, var(--pulsar-blue), var(--nebula-purple))';
+            }, 2000);
+        }
+        
+        // Función para generar PDF (simulación)
+        function generatePDF() {
+            alert('Función de exportación a PDF activada. En una implementación real, esto generaría un documento PDF con todos los episodios.');
+            
+            // Efecto visual
+            const pdfButton = document.getElementById('generate-pdf');
+            pdfButton.innerHTML = '<i>⏳</i> Generando...';
+            pdfButton.disabled = true;
+            
+            setTimeout(() => {
+                pdfButton.innerHTML = '<i>📄</i> Exportar a PDF';
+                pdfButton.disabled = false;
+                alert('PDF generado con éxito!');
+            }, 2000);
+        }
+        
+        // Hacer las funciones accesibles globalmente
+        window.updateEpisodeTitle = updateEpisodeTitle;
+        window.updateStepText = updateStepText;
+        window.addGun = addGun;
+        window.deleteGun = deleteGun;
+        window.updateGunField = updateGunField;
+        window.deleteEpisode = deleteEpisode;
+    </script>
+</body>
+</html>

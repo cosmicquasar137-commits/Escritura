@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base de Personajes - Narrativa Espacial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Variables de color y tipografía */
+        :root {
+            --deep-space: #0a0818;
+            --nebula-purple: #4e1a7d;
+            --pulsar-blue: #00c2ff;
+            --supernova: #ff3860;
+            --star-light: #f8f9fa;
+            --galaxy-edge: #1a1a2e;
+            --space-dust: #16213e;
+            --quantum-violet: #8a2be2;
+            --stardust-yellow: #ffde59;
+        }
+        
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: radial-gradient(ellipse at center, var(--nebula-purple) 0%, var(--deep-space) 70%);
+            color: var(--star-light);
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Efecto de estrellas */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 5px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 3px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 4px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            z-index: -1;
+            animation: stars 120s linear infinite;
+        }
+        
+        @keyframes stars {
+            from { transform: translateY(0); }
+            to { transform: translateY(-1000px); }
+        }
+        
+        /* Cabecera y navegación */
+        header {
+            background: rgba(10, 8, 24, 0.8);
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid var(--pulsar-blue);
+            box-shadow: 0 0 15px rgba(0, 194, 255, 0.3);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 1rem;
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            background: linear-gradient(90deg, var(--pulsar-blue), var(--supernova));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(0, 194, 255, 0.5);
+        }
+        
+        .logo-subtitle {
+            font-size: 1rem;
+            color: var(--pulsar-blue);
+            letter-spacing: 2px;
+            margin-top: -5px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: var(--star-light);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 500;
+            letter-spacing: 1px;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        nav a:hover {
+            color: var(--pulsar-blue);
+        }
+        
+        nav a.active {
+            color: var(--pulsar-blue);
+            background: rgba(0, 194, 255, 0.1);
+            box-shadow: 0 0 10px rgba(0, 194, 255, 0.3);
+        }
+        
+        nav a.active::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: var(--pulsar-blue);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--pulsar-blue);
+        }
+        
+        /* Contenido principal */
+        .main-container {
+            display: flex;
+            flex: 1;
+            max-width: 1800px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0 1rem;
+        }
+        
+        /* Menú lateral */
+        .sidebar {
+            width: 300px;
+            background: rgba(26, 26, 46, 0.7);
+            border-right: 1px solid rgba(0, 194, 255, 0.3);
+            padding: 1.5rem 1rem;
+            height: calc(100vh - 120px);
+            position: sticky;
+            top: 120px;
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .sidebar-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--pulsar-blue);
+            font-size: 1.4rem;
+        }
+        
+        .search-container {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 40px;
+            border-radius: 30px;
+            border: 1px solid var(--pulsar-blue);
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--pulsar-blue);
+        }
+        
+        .filter-container {
+            margin-bottom: 1.5rem;
+        }
+        
+        .filter-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--pulsar-blue);
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .filter-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+        
+        .filter-btn {
+            background: rgba(0, 194, 255, 0.1);
+            border: 1px solid var(--pulsar-blue);
+            color: var(--star-light);
+            border-radius: 20px;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--pulsar-blue);
+            color: var(--deep-space);
+        }
+        
+        .character-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
+        .character-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0.8rem;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(0, 194, 255, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .character-item:hover {
+            background: rgba(0, 194, 255, 0.15);
+            border-color: var(--pulsar-blue);
+        }
+        
+        .character-item.active {
+            background: rgba(0, 194, 255, 0.25);
+            border-color: var(--pulsar-blue);
+            box-shadow: 0 0 10px rgba(0, 194, 255, 0.3);
+        }
+        
+        .character-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--space-dust);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 2px solid var(--pulsar-blue);
+        }
+        
+        .character-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .character-avatar .placeholder {
+            color: var(--pulsar-blue);
+            font-size: 1.2rem;
+        }
+        
+        .character-info {
+            flex: 1;
+        }
+        
+        .character-name {
+            font-weight: bold;
+            margin-bottom: 3px;
+            font-family: 'Orbitron', sans-serif;
+            color: var(--pulsar-blue);
+        }
+        
+        .character-occupation {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+        
+        .add-character {
+            margin-top: 1rem;
+            width: 100%;
+            background: linear-gradient(90deg, var(--pulsar-blue), var(--nebula-purple));
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 194, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .add-character:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 194, 255, 0.5);
+        }
+        
+        /* Vista principal de personaje */
+        .character-detail {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+            height: calc(100vh - 120px);
+        }
+        
+        .character-header {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            align-items: flex-start;
+        }
+        
+        .character-avatar-large {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: var(--space-dust);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 3px solid var(--pulsar-blue);
+            box-shadow: 0 0 20px rgba(0, 194, 255, 0.3);
+            position: relative;
+        }
+        
+        .character-avatar-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .character-avatar-large .placeholder {
+            color: var(--pulsar-blue);
+            font-size: 3rem;
+        }
+        
+        .upload-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--pulsar-blue);
+            border: 1px solid var(--pulsar-blue);
+        }
+        
+        .character-main-info {
+            flex: 1;
+        }
+        
+        .character-title {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+        
+        .character-name-input {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            background: transparent;
+            border: none;
+            color: var(--pulsar-blue);
+            padding: 0.3rem;
+            border-radius: 4px;
+            width: auto;
+            max-width: 400px;
+        }
+        
+        .character-name-input:focus {
+            outline: 1px solid var(--pulsar-blue);
+            background: rgba(0, 194, 255, 0.1);
+        }
+        
+        .character-nickname {
+            font-size: 1.5rem;
+            color: #aaa;
+            font-style: italic;
+            background: transparent;
+            border: none;
+            padding: 0.3rem;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .character-nickname:focus {
+            outline: 1px solid var(--pulsar-blue);
+            background: rgba(0, 194, 255, 0.1);
+        }
+        
+        .character-basic-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .info-label {
+            font-size: 0.9rem;
+            color: var(--pulsar-blue);
+            margin-bottom: 0.3rem;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .info-input {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 194, 255, 0.3);
+            border-radius: 6px;
+            padding: 0.6rem;
+            color: white;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .info-input:focus {
+            outline: 1px solid var(--pulsar-blue);
+            background: rgba(0, 194, 255, 0.1);
+        }
+        
+        /* Secciones del personaje */
+        .character-section {
+            background: rgba(26, 26, 46, 0.5);
+            border: 1px solid rgba(0, 194, 255, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px solid rgba(0, 194, 255, 0.3);
+        }
+        
+        .section-icon {
+            color: var(--pulsar-blue);
+            font-size: 1.4rem;
+        }
+        
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--pulsar-blue);
+            font-size: 1.3rem;
+        }
+        
+        .section-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .full-width {
+            grid-column: 1 / -1;
+        }
+        
+        textarea.info-input {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .traits-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+        
+        .trait-item {
+            background: rgba(0, 194, 255, 0.1);
+            border: 1px solid var(--pulsar-blue);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .delete-trait {
+            color: var(--supernova);
+            cursor: pointer;
+        }
+        
+        .add-trait {
+            background: transparent;
+            border: 1px dashed var(--pulsar-blue);
+            color: var(--pulsar-blue);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            border-top: 1px solid rgba(0, 194, 255, 0.3);
+            color: var(--pulsar-blue);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            margin-top: auto;
+        }
+        
+        /* Animaciones */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 194, 255, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 194, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 194, 255, 0); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Modal para subir imagen */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: var(--galaxy-edge);
+            border: 2px solid var(--pulsar-blue);
+            border-radius: 12px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 0 30px rgba(0, 194, 255, 0.5);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--pulsar-blue);
+            font-size: 1.5rem;
+        }
+        
+        .close-modal {
+            color: var(--supernova);
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .close-modal:hover {
+            transform: rotate(90deg);
+        }
+        
+        .image-preview {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 1.5rem;
+            border: 2px dashed var(--pulsar-blue);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .image-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            display: none;
+        }
+        
+        .image-preview .placeholder {
+            color: var(--pulsar-blue);
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .file-input-container {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .file-input {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+        
+        .file-label {
+            display: block;
+            background: rgba(0, 194, 255, 0.1);
+            border: 1px solid var(--pulsar-blue);
+            color: var(--pulsar-blue);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-label:hover {
+            background: rgba(0, 194, 255, 0.2);
+        }
+        
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        
+        .modal-btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .modal-btn.confirm {
+            background: var(--pulsar-blue);
+            color: white;
+        }
+        
+        .modal-btn.cancel {
+            background: transparent;
+            color: var(--supernova);
+            border: 1px solid var(--supernova);
+        }
+        
+        .modal-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 194, 255, 0.3);
+        }
+        
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                top: 0;
+            }
+            
+            .character-detail {
+                height: auto;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .character-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .character-title {
+                justify-content: center;
+            }
+            
+            .character-basic-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabecera con navegación -->
+    <header>
+        <div class="logo-container">
+            <div>
+                <div class="logo">COSMIC NARRATIVE</div>
+                <div class="logo-subtitle">Story Development Toolkit</div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="character.html" class="active">Personajes</a></li>
+                <li><a href="episodios.html">Episodios</a></li>
+                <li><a href="timeline.html">Líneas de Tiempo</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <!-- Contenido principal -->
+    <div class="main-container">
+        <!-- Menú lateral -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-title">Personajes</div>
+            </div>
+            
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" placeholder="Buscar personaje..." id="searchInput">
+            </div>
+            
+            <div class="filter-container">
+                <div class="filter-title">
+                    <i class="fas fa-filter"></i> Filtrar por
+                </div>
+                <div class="filter-options">
+                    <div class="filter-btn active">Todos</div>
+                    <div class="filter-btn">Protagonistas</div>
+                    <div class="filter-btn">Antagonistas</div>
+                    <div class="filter-btn">Secundarios</div>
+                    <div class="filter-btn">Aliados</div>
+                    <div class="filter-btn">Enemigos</div>
+                </div>
+            </div>
+            
+            <div class="character-list" id="characterList">
+                <!-- Personajes se cargarán dinámicamente -->
+            </div>
+            
+            <button class="add-character pulse" id="addCharacter">
+                <i class="fas fa-plus"></i> Nuevo Personaje
+            </button>
+        </div>
+        
+        <!-- Vista detallada del personaje -->
+        <div class="character-detail" id="characterDetail">
+            <!-- Vista detallada se cargará dinámicamente -->
+            <div style="text-align: center; padding: 5rem 0; color: var(--pulsar-blue);">
+                <i class="fas fa-user-astronaut" style="font-size: 5rem; margin-bottom: 1.5rem;"></i>
+                <h2 style="font-family: 'Orbitron', sans-serif;">Selecciona un personaje</h2>
+                <p>Crea y administra tus personajes desde aquí</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal para subir imagen -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Subir Imagen</div>
+                <div class="close-modal" id="closeModal">&times;</div>
+            </div>
+            
+            <div class="image-preview" id="imagePreview">
+                <div class="placeholder">
+                    <i class="fas fa-cloud-upload-alt" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                    <p>Selecciona una imagen</p>
+                </div>
+                <img id="previewImage" src="" alt="Vista previa">
+            </div>
+            
+            <div class="file-input-container">
+                <input type="file" id="imageInput" class="file-input" accept="image/*">
+                <label for="imageInput" class="file-label">
+                    <i class="fas fa-folder-open"></i> Seleccionar archivo
+                </label>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="modal-btn cancel" id="cancelUpload">Cancelar</button>
+                <button class="modal-btn confirm" id="confirmUpload">Guardar Imagen</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pie de página -->
+    <footer>
+        COSMIC NARRATIVE TOOLKIT &copy; 2025 | Base de datos de personajes
+    </footer>
+    
+    <script>
+        // Datos de ejemplo para personajes
+        const sampleCharacters = [
+            {
+                id: 1,
+                name: "Elena Kovac",
+                nickname: "La Capitana",
+                image: null,
+                basicInfo: {
+                    age: "35 años",
+                    race: "Humana",
+                    gender: "Mujer",
+                    affiliation: "Alianza Terrestre",
+                    occupation: "Capitana de nave estelar",
+                    status: "Viva"
+                },
+                appearance: {
+                    description: "1.75m, complexión atlética, ojos azul intenso, cicatriz en la mejilla izquierda.",
+                    clothing: "Uniforme militar azul oscuro con insignias de rango.",
+                    accessories: "Pistola láser, reloj de muñeca holográfico."
+                },
+                personality: {
+                    alignment: "Legal Bueno",
+                    traits: ["Liderazgo natural", "Inteligencia táctica", "Lealtad inquebrantable", "Impaciente"],
+                    gestures: "Postura erguida, mirada directa, manos en la espalda al evaluar situaciones.",
+                    voice: "Firme, clara, tono de autoridad."
+                },
+                background: {
+                    summary: "Ex piloto de caza que ascendió rápidamente por méritos en batalla. Perdió a su familia en el ataque de los Xylosianos.",
+                    relationships: "Hermana menor: Liara (ingeniera), Mentor: Comandante Thorne",
+                    goals: "Proteger la Tierra y vengar a su familia.",
+                    secrets: "Tiene un implante cibernético que controla una condición cardíaca."
+                },
+                abilities: {
+                    skills: "Piloto experta, estratega, combate cuerpo a cuerpo.",
+                    weaknesses: "Implante vulnerable a pulsos electromagnéticos, ataques de ira.",
+                    equipment: "Nave estelar 'Valor', pistola láser modelo X7, traje de combate."
+                },
+                extras: {
+                    trivia: "Colecciona relojes antiguos, toca el piano.",
+                    quotes: "'En el espacio no hay margen para errores. Solo resultados.'",
+                    notes: "Inspirado en figuras históricas de liderazgo femenino."
+                }
+            },
+            {
+                id: 2,
+                name: "Kaelen Thorne",
+                nickname: "El Profeta",
+                image: null,
+                basicInfo: {
+                    age: "Desconocida",
+                    race: "Zelthorian",
+                    gender: "No binario",
+                    affiliation: "Antiguo Consejo Cósmico",
+                    occupation: "Guardián del Conocimiento",
+                    status: "Inmortal"
+                },
+                appearance: {
+                    description: "2.10m, piel azulada con patrones luminiscentes, ojos completamente negros, sin cabello.",
+                    clothing: "Túnica dorada con símbolos cósmicos, descalzo.",
+                    accessories: "Báculo de cristal que flota a su lado."
+                },
+                personality: {
+                    alignment: "Neutral",
+                    traits: ["Paciente", "Sabelotodo", "Misterioso", "Desapegado emocionalmente"],
+                    gestures: "Flota ligeramente sobre el suelo, movimientos lentos y calculados.",
+                    voice: "Ecoica, múltiples tonos simultáneos."
+                },
+                background: {
+                    summary: "Último sobreviviente de una raza ancestral que guarda el conocimiento del universo. Ha observado el ascenso y caída de civilizaciones.",
+                    relationships: "Todos los seres vivos son sus 'cargos'",
+                    goals: "Preservar el equilibrio cósmico.",
+                    secrets: "Puede alterar la realidad en pequeña escala."
+                },
+                abilities: {
+                    skills: "Telepatía, telequinesis, visión temporal limitada.",
+                    weaknesses: "Vulnerable al hierro forjado en supernovas, debe recargar energía en cúmulos estelares.",
+                    equipment: "Báculo de cristal de neutronio, amuleto del vacío."
+                },
+                extras: {
+                    trivia: "Habla en acertijos, parece no necesitar dormir.",
+                    quotes: "'El tiempo es un río con miles de corrientes. Yo nado en todas.'",
+                    notes: "Basado en arquetipos de mentores místicos."
+                }
+            }
+        ];
+        
+        // Estado de la aplicación
+        let characters = [];
+        let currentCharacterId = null;
+        let selectedImage = null;
+
+        // Referencias a elementos del DOM
+        const imageModal = document.getElementById('imageModal');
+        const closeModal = document.getElementById('closeModal');
+        const cancelUpload = document.getElementById('cancelUpload');
+        const imageInput = document.getElementById('imageInput');
+        const previewImage = document.getElementById('previewImage');
+        const confirmUpload = document.getElementById('confirmUpload');
+        const imagePreview = document.getElementById('imagePreview');
+        
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', () => {
+            // Cargar datos guardados o usar datos de ejemplo
+            const savedCharacters = localStorage.getItem('characters');
+            characters = savedCharacters ? JSON.parse(savedCharacters) : sampleCharacters;
+            
+            // Renderizar la lista de personajes
+            renderCharacterList();
+            
+            // Configurar event listeners
+            document.getElementById('addCharacter').addEventListener('click', addNewCharacter);
+            document.getElementById('searchInput').addEventListener('input', searchCharacters);
+            
+            // Si hay personajes, seleccionar el primero
+            if (characters.length > 0) {
+                selectCharacter(characters[0].id);
+            }
+            
+            // Configurar eventos del modal
+            closeModal.addEventListener('click', () => imageModal.style.display = 'none');
+            cancelUpload.addEventListener('click', () => imageModal.style.display = 'none');
+            
+            // Evento para seleccionar archivo
+            imageInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    // Validar que sea una imagen
+                    if (!file.type.match('image.*')) {
+                        alert('Por favor selecciona un archivo de imagen (JPG, PNG, etc.)');
+                        return;
+                    }
+                    
+                    // Validar tamaño máximo (2MB)
+                    if (file.size > 2 * 1024 * 1024) {
+                        alert('La imagen es demasiado grande. Máximo permitido: 2MB');
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    
+                    reader.onload = function(event) {
+                        previewImage.src = event.target.result;
+                        previewImage.style.display = 'block';
+                        imagePreview.querySelector('.placeholder').style.display = 'none';
+                        selectedImage = event.target.result; // Guardamos la imagen como data URL
+                    };
+                    
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Evento para confirmar la subida
+            confirmUpload.addEventListener('click', function() {
+                if (selectedImage) {
+                    const character = characters.find(c => c.id === currentCharacterId);
+                    if (character) {
+                        character.image = selectedImage;
+                        renderCharacterDetail();
+                        saveAllCharacters();
+                    }
+                }
+                imageModal.style.display = 'none';
+            });
+        });
+        
+        // Función para abrir el modal de subida de imagen
+        function openImageUpload() {
+            // Resetear el modal
+            imageInput.value = '';
+            previewImage.src = '';
+            previewImage.style.display = 'none';
+            imagePreview.querySelector('.placeholder').style.display = 'block';
+            selectedImage = null;
+            
+            imageModal.style.display = 'flex';
+        }
+        
+        // Función para renderizar la lista de personajes
+        function renderCharacterList() {
+            const container = document.getElementById('characterList');
+            container.innerHTML = '';
+            
+            characters.forEach(character => {
+                const characterEl = document.createElement('div');
+                characterEl.className = 'character-item';
+                if (currentCharacterId === character.id) {
+                    characterEl.classList.add('active');
+                }
+                characterEl.dataset.id = character.id;
+                characterEl.addEventListener('click', () => selectCharacter(character.id));
+                
+                characterEl.innerHTML = `
+                    <div class="character-avatar">
+                        ${character.image ? 
+                            `<img src="${character.image}" alt="${character.name}">` : 
+                            `<div class="placeholder"><i class="fas fa-user-astronaut"></i></div>`}
+                    </div>
+                    <div class="character-info">
+                        <div class="character-name">${character.name}</div>
+                        <div class="character-occupation">${character.basicInfo?.occupation || 'Sin ocupación'}</div>
+                    </div>
+                `;
+                
+                container.appendChild(characterEl);
+            });
+        }
+        
+        // Función para seleccionar un personaje
+        function selectCharacter(id) {
+            currentCharacterId = id;
+            renderCharacterList();
+            renderCharacterDetail();
+        }
+        
+        // Función para renderizar la vista detallada
+        function renderCharacterDetail() {
+            const character = characters.find(c => c.id === currentCharacterId);
+            if (!character) return;
+            
+            const container = document.getElementById('characterDetail');
+            
+            container.innerHTML = `
+                <div class="character-header">
+                    <div class="character-avatar-large">
+                        ${character.image ? 
+                            `<img src="${character.image}" alt="${character.name}">` : 
+                            `<div class="placeholder"><i class="fas fa-user-astronaut"></i></div>`}
+                        <div class="upload-btn" onclick="openImageUpload()">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="character-main-info">
+                        <div class="character-title">
+                            <input type="text" class="character-name-input" value="${character.name}" 
+                                oninput="updateCharacterField('name', event)" data-field="name">
+                        </div>
+                        <input type="text" class="character-nickname" value="${character.nickname || ''}" 
+                            placeholder="Apodo o título" 
+                            oninput="updateCharacterField('nickname', event)" data-field="nickname">
+                        
+                        <div class="character-basic-info">
+                            <div class="info-item">
+                                <div class="info-label">Edad</div>
+                                <input type="text" class="info-input" value="${character.basicInfo?.age || ''}" 
+                                    oninput="updateNestedField('basicInfo', 'age', event)">
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Raza</div>
+                                <input type="text" class="info-input" value="${character.basicInfo?.race || ''}" 
+                                    oninput="updateNestedField('basicInfo', 'race', event)">
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Género</div>
+                                <input type="text" class="info-input" value="${character.basicInfo?.gender || ''}" 
+                                    oninput="updateNestedField('basicInfo', 'gender', event)">
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Afiliación</div>
+                                <input type="text" class="info-input" value="${character.basicInfo?.affiliation || ''}" 
+                                    oninput="updateNestedField('basicInfo', 'affiliation', event)">
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Ocupación</div>
+                                <input type="text" class="info-input" value="${character.basicInfo?.occupation || ''}" 
+                                    oninput="updateNestedField('basicInfo', 'occupation', event)">
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Estado</div>
+                                <input type="text" class="info-input" value="${character.basicInfo?.status || ''}" 
+                                    oninput="updateNestedField('basicInfo', 'status', event)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Apariencia física -->
+                <div class="character-section">
+                    <div class="section-header">
+                        <i class="fas fa-eye section-icon"></i>
+                        <div class="section-title">Apariencia Física</div>
+                    </div>
+                    <div class="section-content">
+                        <div class="info-item full-width">
+                            <div class="info-label">Descripción detallada</div>
+                            <textarea class="info-input" 
+                                oninput="updateNestedField('appearance', 'description', event)">${character.appearance?.description || ''}</textarea>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Estilo de vestimenta</div>
+                            <textarea class="info-input" 
+                                oninput="updateNestedField('appearance', 'clothing', event)">${character.appearance?.clothing || ''}</textarea>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Accesorios/armas</div>
+                            <textarea class="info-input" 
+                                oninput="updateNestedField('appearance', 'accessories', event)">${character.appearance?.accessories || ''}</textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Personalidad y comportamiento -->
+                <div class="character-section">
+                    <div class="section-header">
+                        <i class="fas fa-brain section-icon"></i>
+                        <div class="section-title">Personalidad y Comportamiento</div>
+                    </div>
+                    <div class="section-content">
+                        <div class="info-item">
+                            <div class="info-label">Alineamiento</div>
+                            <input type="text" class="info-input" value="${character.personality?.alignment || ''}" 
+                                oninput="updateNestedField('personality', 'alignment', event)">
+                        </div>
+                        <div class="info-item full-width">
+                            <div class="info-label">Virtudes y defectos</div>
+                            <div class="traits-container" id="traitsContainer">
+                                ${renderTraits(character.personality?.traits || [])}
+                                <div class="add-trait" onclick="addTrait()">
+                                    <i class="fas fa-plus"></i> Añadir rasgo
+                                </div>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Gestos/postura</div>
+                            <textarea class="info-input" 
+                                oninput="updateNestedField('personality', 'gestures', event)">${character.personality?.gestures || ''}</textarea>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Tono de voz</div>
+                            <textarea class="info-input" 
+                                oninput="updateNestedField('personality', 'voice', event)">${character.personality?.voice || ''}</textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Historia (Lore) -->
+                <div class="character-section">
+                    <div class="section-header">
+                        <i class="fas fa-book section-icon"></i>
+                        <div class="section-title">Historia (Lore)</div>
+                    </div>
+                    <div class="section-content">
+                        <div class="info-item full-width">
+                            <div class="info-label">Trasfondo resumido</div>
+                            <textarea class="info-input" 
+                                oninput="updateNestedField('background', 'summary', event)">${character.background?.summary || ''}</textarea>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Relaciones importantes</div>
+                            <textarea class="info-input" 
+                                oninput="updateNestedField('background', 'relationships', event)">${character.background?.relationships || ''}</textarea>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Objetivos/motivaciones</div>
+                            <textarea class="info-input" 
+                                oninput="updateNestedField('background', 'goals', event)">${character.background?.goals || ''}</textarea>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Secretos</div>
+                            <textarea class="info-input" 
+                                oninput="updateNestedField('background', 'secrets', event)">${character.background?.secrets || ''}</textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Habilidades y poderes -->
+                <div class="character-section">
+                    <div class="section-header">
+                        <i class="fas fa-bolt section-icon"></i>
+                        <div class="section-title">Habilidades y Poderes</div>
+                    </div>
+                    <div class="section-content">
+                        <div class="info-item">
+                            <div class="info-label">Habilidades principales</div>
+                            <textarea class="info-input" 
+                                oninput="updateNestedField('abilities', 'skills', event)">${character.abilities?.skills || ''}</textarea>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Debilidades</div>
+                            <textarea class="info-input" 
+                                oninput="updateNestedField('abilities', 'weaknesses', event)">${character.abilities?.weaknesses || ''}</textarea>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Equipo</div>
+                            <textarea class="info-input" 
+                                oninput="updateNestedField('abilities', 'equipment', event)">${character.abilities?.equipment || ''}</textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Datos extras -->
+                <div class="character-section">
+                    <div class="section-header">
+                        <i class="fas fa-star section-icon"></i>
+                        <div class="section-title">Datos Extras</div>
+                    </div>
+                    <div class="section-content">
+                        <div class="info-item">
+                            <div class="info-label">Curiosidades</div>
+                            <textarea class="info-input" 
+                                oninput="updateNestedField('extras', 'trivia', event)">${character.extras?.trivia || ''}</textarea>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Citas memorables</div>
+                            <textarea class="info-input" 
+                                oninput="updateNestedField('extras', 'quotes', event)">${character.extras?.quotes || ''}</textarea>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Notas del autor</div>
+                            <textarea class="info-input" 
+                                oninput="updateNestedField('extras', 'notes', event)">${character.extras?.notes || ''}</textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn" onclick="saveAllCharacters()" style="width: 300px; margin: 0 auto;">
+                        <i class="fas fa-save"></i> Guardar Personaje
+                    </button>
+                </div>
+            `;
+        }
+        
+        // Función para renderizar los rasgos de personalidad
+        function renderTraits(traits) {
+            if (!traits || traits.length === 0) return '';
+            
+            return traits.map((trait, index) => `
+                <div class="trait-item">
+                    <input type="text" value="${trait}" 
+                        oninput="updateTrait(${index}, event)">
+                    <div class="delete-trait" onclick="deleteTrait(${index})">
+                        <i class="fas fa-times"></i>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Función para añadir un nuevo personaje
+        function addNewCharacter() {
+            const newCharacter = {
+                id: Date.now(), // Usamos timestamp como ID único
+                name: "Nuevo Personaje",
+                nickname: "",
+                image: null,
+                basicInfo: {
+                    age: "",
+                    race: "",
+                    gender: "",
+                    affiliation: "",
+                    occupation: "",
+                    status: ""
+                },
+                appearance: {
+                    description: "",
+                    clothing: "",
+                    accessories: ""
+                },
+                personality: {
+                    alignment: "",
+                    traits: [],
+                    gestures: "",
+                    voice: ""
+                },
+                background: {
+                    summary: "",
+                    relationships: "",
+                    goals: "",
+                    secrets: ""
+                },
+                abilities: {
+                    skills: "",
+                    weaknesses: "",
+                    equipment: ""
+                },
+                extras: {
+                    trivia: "",
+                    quotes: "",
+                    notes: ""
+                }
+            };
+            
+            characters.push(newCharacter);
+            renderCharacterList();
+            selectCharacter(newCharacter.id);
+        }
+        
+        // Función para actualizar un campo del personaje
+        function updateCharacterField(field, event) {
+            const character = characters.find(c => c.id === currentCharacterId);
+            if (character) {
+                character[field] = event.target.value;
+            }
+        }
+        
+        // Función para actualizar un campo anidado
+        function updateNestedField(category, field, event) {
+            const character = characters.find(c => c.id === currentCharacterId);
+            if (character && character[category]) {
+                character[category][field] = event.target.value;
+            }
+        }
+        
+        // Función para añadir un rasgo
+        function addTrait() {
+            const character = characters.find(c => c.id === currentCharacterId);
+            if (character) {
+                if (!character.personality) character.personality = {};
+                if (!character.personality.traits) character.personality.traits = [];
+                
+                character.personality.traits.push("Nuevo rasgo");
+                renderCharacterDetail();
+            }
+        }
+        
+        // Función para actualizar un rasgo
+        function updateTrait(index, event) {
+            const character = characters.find(c => c.id === currentCharacterId);
+            if (character && character.personality && character.personality.traits) {
+                character.personality.traits[index] = event.target.value;
+            }
+        }
+        
+        // Función para eliminar un rasgo
+        function deleteTrait(index) {
+            const character = characters.find(c => c.id === currentCharacterId);
+            if (character && character.personality && character.personality.traits) {
+                character.personality.traits.splice(index, 1);
+                renderCharacterDetail();
+            }
+        }
+        
+        // Función para buscar personajes
+        function searchCharacters() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const characterItems = document.querySelectorAll('.character-item');
+            
+            characterItems.forEach(item => {
+                const name = item.querySelector('.character-name').textContent.toLowerCase();
+                const occupation = item.querySelector('.character-occupation').textContent.toLowerCase();
+                
+                if (name.includes(searchTerm) || occupation.includes(searchTerm)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+        
+        // Función para guardar todos los personajes
+        function saveAllCharacters() {
+            localStorage.setItem('characters', JSON.stringify(characters));
+            
+            // Mostrar notificación
+            const saveButton = document.querySelector('.btn');
+            if (saveButton) {
+                saveButton.innerHTML = '<i class="fas fa-check"></i> Guardado!';
+                saveButton.style.background = 'linear-gradient(90deg, #00c853, #009624)';
+                
+                setTimeout(() => {
+                    saveButton.innerHTML = '<i class="fas fa-save"></i> Guardar Personaje';
+                    saveButton.style.background = 'linear-gradient(90deg, var(--pulsar-blue), var(--nebula-purple))';
+                }, 2000);
+            }
+        }
+        
+        // Hacer las funciones accesibles globalmente
+        window.updateCharacterField = updateCharacterField;
+        window.updateNestedField = updateNestedField;
+        window.addTrait = addTrait;
+        window.updateTrait = updateTrait;
+        window.deleteTrait = deleteTrait;
+        window.saveAllCharacters = saveAllCharacters;
+        window.openImageUpload = openImageUpload;
+    </script>
+</body>
+</html>

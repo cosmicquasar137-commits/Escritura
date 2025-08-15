@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Líneas de Tiempo - Narrativa Espacial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Variables de color y tipografía */
+        :root {
+            --deep-space: #0a0818;
+            --nebula-purple: #4e1a7d;
+            --pulsar-blue: #00c2ff;
+            --supernova: #ff3860;
+            --star-light: #f8f9fa;
+            --galaxy-edge: #1a1a2e;
+            --space-dust: #16213e;
+        }
+        
+        /* Estilos generales */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: radial-gradient(ellipse at center, var(--nebula-purple) 0%, var(--deep-space) 70%);
+            color: var(--star-light);
+            font-family: 'Montserrat', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        /* Efecto de estrellas */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 5px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 3px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 4px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+            z-index: -1;
+            animation: stars 120s linear infinite;
+        }
+        
+        @keyframes stars {
+            from { transform: translateY(0); }
+            to { transform: translateY(-1000px); }
+        }
+        
+        /* Cabecera y navegación */
+        header {
+            background: rgba(10, 8, 24, 0.8);
+            backdrop-filter: blur(5px);
+            border-bottom: 1px solid var(--pulsar-blue);
+            box-shadow: 0 0 15px rgba(0, 194, 255, 0.3);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 1rem;
+        }
+        
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            background: linear-gradient(90deg, var(--pulsar-blue), var(--supernova));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(0, 194, 255, 0.5);
+        }
+        
+        .logo-subtitle {
+            font-size: 1rem;
+            color: var(--pulsar-blue);
+            letter-spacing: 2px;
+            margin-top: -5px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: var(--star-light);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 500;
+            letter-spacing: 1px;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        nav a:hover {
+            color: var(--pulsar-blue);
+        }
+        
+        nav a.active {
+            color: var(--pulsar-blue);
+            background: rgba(0, 194, 255, 0.1);
+            box-shadow: 0 0 10px rgba(0, 194, 255, 0.3);
+        }
+        
+        nav a.active::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: var(--pulsar-blue);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--pulsar-blue);
+        }
+        
+        /* Contenido principal */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .page-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            background: linear-gradient(90deg, var(--pulsar-blue), var(--supernova));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(0, 194, 255, 0.4);
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .btn {
+            background: linear-gradient(90deg, var(--pulsar-blue), var(--nebula-purple));
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(0, 194, 255, 0.3);
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 194, 255, 0.5);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(90deg, var(--supernova), #b71540);
+        }
+        
+        .btn i {
+            font-size: 1.2rem;
+        }
+        
+        /* Contenedor de timelines */
+        .timelines-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+        
+        .timeline-card {
+            background: rgba(26, 26, 46, 0.7);
+            border: 1px solid var(--pulsar-blue);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 0 20px rgba(0, 194, 255, 0.2);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-card:hover {
+            box-shadow: 0 0 30px rgba(0, 194, 255, 0.4);
+            transform: translateY(-5px);
+        }
+        
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 194, 255, 0.3);
+        }
+        
+        .timeline-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--pulsar-blue);
+            width: 80%;
+            background: transparent;
+            border: none;
+            color: var(--pulsar-blue);
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+        
+        .timeline-title:focus {
+            outline: 1px solid var(--pulsar-blue);
+            background: rgba(0, 194, 255, 0.1);
+        }
+        
+        .delete-timeline {
+            background: rgba(255, 56, 96, 0.2);
+            color: var(--supernova);
+            border: 1px solid var(--supernova);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .delete-timeline:hover {
+            background: rgba(255, 56, 96, 0.4);
+            transform: rotate(90deg);
+        }
+        
+        /* Barra de progreso */
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .progress-label {
+            min-width: 200px;
+            padding: 0.8rem;
+            background: rgba(0, 194, 255, 0.1);
+            border: 1px solid var(--pulsar-blue);
+            border-radius: 6px;
+            color: var(--star-light);
+            font-family: 'Montserrat', sans-serif;
+            text-align: center;
+        }
+        
+        .progress-label:focus {
+            outline: 2px solid var(--pulsar-blue);
+            background: rgba(0, 194, 255, 0.2);
+        }
+        
+        .progress-bar-container {
+            flex-grow: 1;
+            position: relative;
+            height: 30px;
+            background: var(--space-dust);
+            border-radius: 15px;
+            border: 1px solid var(--pulsar-blue);
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--pulsar-blue), var(--supernova));
+            border-radius: 15px;
+            width: 35%;
+            position: relative;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.9rem;
+            color: white;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+        }
+        
+        .slider-container {
+            flex-grow: 1;
+            padding: 0 1rem;
+        }
+        
+        .progress-slider {
+            width: 100%;
+            height: 10px;
+            -webkit-appearance: none;
+            background: var(--space-dust);
+            border-radius: 5px;
+            border: 1px solid var(--pulsar-blue);
+            outline: none;
+        }
+        
+        .progress-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: var(--supernova);
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 56, 96, 0.7);
+            border: 2px solid white;
+        }
+        
+        /* Marcadores de episodios */
+        .milestones-container {
+            margin-top: 2rem;
+        }
+        
+        .milestones-title {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--pulsar-blue);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .milestones {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .milestone {
+            background: rgba(0, 194, 255, 0.15);
+            border: 1px solid var(--pulsar-blue);
+            border-radius: 20px;
+            padding: 0.8rem 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .milestone:hover {
+            background: rgba(0, 194, 255, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 194, 255, 0.3);
+        }
+        
+        .episode-input {
+            background: transparent;
+            border: 1px solid var(--pulsar-blue);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            width: 100px;
+        }
+        
+        .milestone-value {
+            font-family: 'Orbitron', sans-serif;
+            color: var(--pulsar-blue);
+            font-size: 1.1rem;
+        }
+        
+        .delete-milestone {
+            color: var(--supernova);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .delete-milestone:hover {
+            transform: scale(1.2);
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(0, 194, 255, 0.3);
+            color: var(--pulsar-blue);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+        }
+        
+        /* Animaciones */
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 194, 255, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 194, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 194, 255, 0); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .progress-container {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .progress-label {
+                width: 100%;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabecera con navegación -->
+    <header>
+        <div class="logo-container">
+            <div>
+                <div class="logo">COSMIC NARRATIVE</div>
+                <div class="logo-subtitle">Story Development Toolkit</div>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="character.html">Personajes</a></li>
+                <li><a href="episodios.html">Episodios</a></li>
+                <li><a href="timeline.html" class="active">Líneas de Tiempo</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <!-- Contenido principal -->
+    <div class="container">
+        <h1 class="page-title">GESTOR DE LÍNEAS DE TIEMPO</h1>
+        
+        <div class="controls">
+            <button id="add-timeline" class="btn pulse">
+                <i>+</i> Nueva Línea de Tiempo
+            </button>
+            <button id="save-all" class="btn">
+                <i>💾</i> Guardar Todo
+            </button>
+        </div>
+        
+        <div class="timelines-container" id="timelinesContainer">
+            <!-- Las líneas de tiempo se generarán dinámicamente aquí -->
+        </div>
+    </div>
+    
+    <!-- Pie de página -->
+    <footer>
+        COSMIC NARRATIVE TOOLKIT &copy; 2025 | Desarrollado para creadores de historias
+    </footer>
+    
+    <script>
+        // Datos de ejemplo para las líneas de tiempo
+        const sampleTimelines = [
+            {
+                title: "Redención de Marco",
+                leftLabel: "Ex-criminal sin esperanza",
+                rightLabel: "Líder comunitario",
+                progress: 35,
+                milestones: [
+                    { episode: "Ep03", description: "Primer acto altruista" },
+                    { episode: "Ep07", description: "Confesión pública" }
+                ]
+            },
+            {
+                title: "Relación Elena-Carlos",
+                leftLabel: "Desconfianza mutua",
+                rightLabel: "Aliados estratégicos",
+                progress: 60,
+                milestones: [
+                    { episode: "Ep02", description: "Primera misión juntos" },
+                    { episode: "Ep05", description: "Salvan sus vidas mutuamente" },
+                    { episode: "Ep08", description: "Comparten un secreto" }
+                ]
+            },
+            {
+                title: "Tecnología Alienígena",
+                leftLabel: "Descubrimiento casual",
+                rightLabel: "Control total",
+                progress: 20,
+                milestones: [
+                    { episode: "Ep01", description: "Encuentran artefacto" }
+                ]
+            }
+        ];
+        
+        // Estado de la aplicación
+        let timelines = [];
+        
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', () => {
+            // Cargar datos guardados o usar datos de ejemplo
+            const savedTimelines = localStorage.getItem('timelines');
+            timelines = savedTimelines ? JSON.parse(savedTimelines) : sampleTimelines;
+            
+            // Renderizar las líneas de tiempo
+            renderTimelines();
+            
+            // Configurar event listeners
+            document.getElementById('add-timeline').addEventListener('click', addNewTimeline);
+            document.getElementById('save-all').addEventListener('click', saveAllTimelines);
+        });
+        
+        // Función para renderizar todas las líneas de tiempo
+        function renderTimelines() {
+            const container = document.getElementById('timelinesContainer');
+            container.innerHTML = '';
+            
+            timelines.forEach((timeline, index) => {
+                container.appendChild(createTimelineElement(timeline, index));
+            });
+        }
+        
+        // Función para crear el elemento HTML de una línea de tiempo
+        function createTimelineElement(timeline, index) {
+            const timelineEl = document.createElement('div');
+            timelineEl.className = 'timeline-card';
+            timelineEl.innerHTML = `
+                <div class="timeline-header">
+                    <input type="text" class="timeline-title" value="${timeline.title}" 
+                        data-index="${index}" onchange="updateTimelineTitle(event)">
+                    <div class="delete-timeline" onclick="deleteTimeline(${index})">
+                        ✕
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <input type="text" class="progress-label" value="${timeline.leftLabel}" 
+                        data-index="${index}" data-side="left" onchange="updateTimelineLabel(event)">
+                    
+                    <div class="slider-container">
+                        <input type="range" min="0" max="100" value="${timeline.progress}" 
+                            class="progress-slider" data-index="${index}" oninput="updateTimelineProgress(event)">
+                    </div>
+                    
+                    <input type="text" class="progress-label" value="${timeline.rightLabel}" 
+                        data-index="${index}" data-side="right" onchange="updateTimelineLabel(event)">
+                </div>
+                
+                <div class="progress-bar-container">
+                    <div class="progress-fill" style="width: ${timeline.progress}%">
+                        <div class="progress-value">${timeline.progress}%</div>
+                    </div>
+                </div>
+                
+                <div class="milestones-container">
+                    <h3 class="milestones-title">
+                        <i>📌</i> Hitos Narrativos
+                        <button class="btn" onclick="addMilestone(${index})" style="margin-left: auto; padding: 0.4rem 0.8rem; font-size: 0.9rem;">
+                            + Añadir Hito
+                        </button>
+                    </h3>
+                    <div class="milestones" id="milestones-${index}">
+                        ${renderMilestones(timeline.milestones, index)}
+                    </div>
+                </div>
+            `;
+            
+            return timelineEl;
+        }
+        
+        // Función para renderizar los hitos de una línea de tiempo
+        function renderMilestones(milestones, timelineIndex) {
+            if (!milestones || milestones.length === 0) {
+                return `<div class="milestone" style="background: rgba(255,255,255,0.05);">
+                    No hay hitos añadidos
+                </div>`;
+            }
+            
+            return milestones.map((milestone, milestoneIndex) => `
+                <div class="milestone">
+                    <input type="text" class="episode-input" value="${milestone.episode}" 
+                        data-timeline="${timelineIndex}" data-milestone="${milestoneIndex}" 
+                        onchange="updateMilestoneEpisode(event)">
+                    <div class="milestone-value">➔</div>
+                    <input type="text" class="episode-input" value="${milestone.description}" 
+                        data-timeline="${timelineIndex}" data-milestone="${milestoneIndex}" 
+                        onchange="updateMilestoneDescription(event)">
+                    <div class="delete-milestone" onclick="deleteMilestone(${timelineIndex}, ${milestoneIndex})">
+                        ✕
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Función para añadir una nueva línea de tiempo
+        function addNewTimeline() {
+            const newTimeline = {
+                title: "Nueva Línea Temporal",
+                leftLabel: "Estado Inicial",
+                rightLabel: "Estado Objetivo",
+                progress: 0,
+                milestones: []
+            };
+            
+            timelines.push(newTimeline);
+            renderTimelines();
+        }
+        
+        // Función para eliminar una línea de tiempo
+        function deleteTimeline(index) {
+            if (confirm('¿Estás seguro de eliminar esta línea de tiempo?')) {
+                timelines.splice(index, 1);
+                renderTimelines();
+            }
+        }
+        
+        // Función para actualizar el título de una línea de tiempo
+        function updateTimelineTitle(event) {
+            const index = event.target.dataset.index;
+            timelines[index].title = event.target.value;
+        }
+        
+        // Función para actualizar las etiquetas de la línea de tiempo
+        function updateTimelineLabel(event) {
+            const index = event.target.dataset.index;
+            const side = event.target.dataset.side;
+            timelines[index][side + 'Label'] = event.target.value;
+        }
+        
+        // Función para actualizar el progreso
+        function updateTimelineProgress(event) {
+            const index = event.target.dataset.index;
+            const progress = event.target.value;
+            
+            timelines[index].progress = parseInt(progress);
+            
+            // Actualizar la barra de progreso visual
+            const progressFill = event.target.closest('.timeline-card')
+                .querySelector('.progress-fill');
+            const progressValue = event.target.closest('.timeline-card')
+                .querySelector('.progress-value');
+            
+            if (progressFill) progressFill.style.width = `${progress}%`;
+            if (progressValue) progressValue.textContent = `${progress}%`;
+        }
+        
+        // Función para añadir un hito
+        function addMilestone(timelineIndex) {
+            if (!timelines[timelineIndex].milestones) {
+                timelines[timelineIndex].milestones = [];
+            }
+            
+            timelines[timelineIndex].milestones.push({
+                episode: "EpXX",
+                description: "Nuevo hito narrativo"
+            });
+            
+            renderTimelines();
+        }
+        
+        // Función para eliminar un hito
+        function deleteMilestone(timelineIndex, milestoneIndex) {
+            timelines[timelineIndex].milestones.splice(milestoneIndex, 1);
+            renderTimelines();
+        }
+        
+        // Función para actualizar el episodio del hito
+        function updateMilestoneEpisode(event) {
+            const timelineIndex = event.target.dataset.timeline;
+            const milestoneIndex = event.target.dataset.milestone;
+            timelines[timelineIndex].milestones[milestoneIndex].episode = event.target.value;
+        }
+        
+        // Función para actualizar la descripción del hito
+        function updateMilestoneDescription(event) {
+            const timelineIndex = event.target.dataset.timeline;
+            const milestoneIndex = event.target.dataset.milestone;
+            timelines[timelineIndex].milestones[milestoneIndex].description = event.target.value;
+        }
+        
+        // Función para guardar todas las líneas de tiempo
+        function saveAllTimelines() {
+            localStorage.setItem('timelines', JSON.stringify(timelines));
+            
+            // Efecto visual de guardado
+            const saveButton = document.getElementById('save-all');
+            saveButton.textContent = '✓ Guardado!';
+            saveButton.style.background = 'linear-gradient(90deg, #00c853, #009624)';
+            
+            setTimeout(() => {
+                saveButton.innerHTML = '<i>💾</i> Guardar Todo';
+                saveButton.style.background = 'linear-gradient(90deg, var(--pulsar-blue), var(--nebula-purple))';
+            }, 2000);
+        }
+        
+        // Hacer las funciones accesibles globalmente
+        window.updateTimelineTitle = updateTimelineTitle;
+        window.updateTimelineLabel = updateTimelineLabel;
+        window.updateTimelineProgress = updateTimelineProgress;
+        window.addMilestone = addMilestone;
+        window.deleteMilestone = deleteMilestone;
+        window.deleteTimeline = deleteTimeline;
+        window.updateMilestoneEpisode = updateMilestoneEpisode;
+        window.updateMilestoneDescription = updateMilestoneDescription;
+    </script>
+</body>
+</html>
